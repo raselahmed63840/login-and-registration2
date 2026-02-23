@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  font-family: Arial;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right, #5bc0eb, #9d4edd);
+}
+
+.form-box {
+  background: #fff;
+  padding: 30px;
+  width: 320px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.form-box h2 {
+  margin-bottom: 20px;
+}
+
+.form-box input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+}
+
+.form-box button {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(to right, #5bc0eb, #9d4edd);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.switch {
+  color: blue;
+  cursor: pointer;
+  margin-top: 10px;
+}
