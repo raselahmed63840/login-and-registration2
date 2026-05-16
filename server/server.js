@@ -13,14 +13,38 @@ require("dotenv").config();
 const app = express();
 const server = http.createServer(app);
 
-// Middleware
+/* =========================
+   CORS SETUP
+========================= */
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  process.env.FRONTEND_URL,
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    origin: function (origin, callback) {
+      // Allow Postman, mobile app, server-to-server requests
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      console.log("❌ Blocked by CORS:", origin);
+      return callback(new Error("Not allowed by CORS"));
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     credentials: true,
   }),
 );
+
+/* =========================
+   MIDDLEWARE
+========================= */
 
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ extended: true, limit: "20mb" }));
@@ -28,18 +52,27 @@ app.use(express.urlencoded({ extended: true, limit: "20mb" }));
 // Static upload folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// MongoDB connection
+/* =========================
+   MONGODB CONNECTION
+========================= */
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ MongoDB Error:", err.message));
 
-// Test route
+/* =========================
+   TEST ROUTE
+========================= */
+
 app.get("/", (req, res) => {
   res.send("ShopEase API is running...");
 });
 
-// Public/User routes
+/* =========================
+   PUBLIC / USER ROUTES
+========================= */
+
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/profile", require("./routes/profileRoutes"));
 app.use("/api/cart", require("./routes/cartRoutes"));
@@ -59,11 +92,18 @@ app.use("/api/settings", require("./routes/settings"));
 app.use("/api/shipping", require("./routes/shipping"));
 app.use("/api/users", require("./routes/User"));
 
-// Admin routes - admin replace kore admin6935
+/* =========================
+   ADMIN ROUTES
+   admin replaced by admin6935
+========================= */
+
 app.use("/api/admin6935/products", require("./routes/adminProductRoutes"));
 app.use("/api/admin6935", require("./routes/adminRoutes"));
 
-// 404 route - always last
+/* =========================
+   404 ROUTE - ALWAYS LAST
+========================= */
+
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -71,15 +111,22 @@ app.use((req, res) => {
   });
 });
 
-// Global error handler
+/* =========================
+   GLOBAL ERROR HANDLER
+========================= */
+
 app.use((err, req, res, next) => {
-  console.error("❌ Server Error:", err);
+  console.error("❌ Server Error:", err.message);
 
   res.status(err.status || 500).json({
     success: false,
     message: err.message || "Internal Server Error",
   });
 });
+
+/* =========================
+   SERVER LISTEN
+========================= */
 
 const PORT = process.env.PORT || 5000;
 
