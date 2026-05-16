@@ -1,13 +1,15 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
-function ProtectedRoute({ children }) {
-  const isAuthenticated = localStorage.getItem("token"); // example check
+function ProtectedRoute() {
+  const token = localStorage.getItem("token"); // login এ save করা token
 
-  if (!isAuthenticated) {
-    return <Navigate to="/" replace />;
+  // যদি token না থাকে → login এ redirect করবে
+  if (!token) {
+    return <Navigate to="/login" replace />;
   }
 
-  return children;
+  // যদি token থাকে → child route render করবে
+  return <Outlet />;
 }
 
 export default ProtectedRoute;

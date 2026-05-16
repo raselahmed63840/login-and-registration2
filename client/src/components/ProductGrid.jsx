@@ -1,10 +1,19 @@
 import React from "react";
-import ProductCard from "./ProductCard"; // ✅ correct import
-const ProductGrid = ({ products }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-    {products.map((product) => (
-      <ProductCard key={product.id} product={product} />
-    ))}
-  </div>
-);
+import ProductCard from "./ProductCard";
+
+const ProductGrid = ({ products, onAddToCart, onImageClick }) => {
+  return (
+    <div className="grid grid-cols-3 gap-6">
+      {products.map((product) => (
+        <ProductCard
+          key={product._id || product.id}
+          product={product}
+          onBuy={onAddToCart}
+          onImageClick={onImageClick}
+        />
+      ))}
+    </div>
+  );
+};
+
 export default ProductGrid;
