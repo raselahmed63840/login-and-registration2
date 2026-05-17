@@ -14,12 +14,10 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Wishlist from "./pages/Wishlist";
 import TrackOrder from "./pages/TrackOrder";
-import LiveViewer from "./pages/LiveViewer";
 
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProducts from "./pages/admin/AdminProducts";
-import AdminLive from "./pages/admin/AdminLive";
 import AdminAddProduct from "./pages/admin/AdminAddProduct";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminOrders from "./pages/admin/AdminOrders";
@@ -48,7 +46,6 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/track-order" element={<TrackOrder />} />
-        <Route path="/live" element={<LiveViewer />} />
         <Route path="/orders" element={<Orders />} />
 
         {/* Admin Routes */}
@@ -56,7 +53,6 @@ const App = () => {
           <Route index element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
           <Route path="products/add" element={<AdminAddProduct />} />
-          <Route path="live" element={<AdminLive />} />
           <Route path="users" element={<AdminUsers />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="reviews" element={<AdminReviews />} />
